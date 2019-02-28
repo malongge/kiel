@@ -185,6 +185,8 @@ class BaseConsumer(Client):
         """
         messages = []
         for offset, msg in partition.message_set.messages:
+            if not msg.value:
+                continue
             try:
                 value = self.deserializer(msg.value)
             except Exception:
