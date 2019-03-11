@@ -9,19 +9,17 @@ from tornado import gen, ioloop
 
 from kiel.clients import Producer
 
-
 log = logging.getLogger()
-
 
 parser = argparse.ArgumentParser(
     description="Example script that produces messages to a given topic."
 )
 parser.add_argument(
-    "brokers", type=lambda v: v.split(","),
+    "--brokers", type=lambda v: v.split(","), default='127.0.0.1:9092',
     help="Comma-separated list of bootstrap broker servers"
 )
 parser.add_argument(
-    "topic", type=str,
+    "--topic", type=str, default='test',
     help="Topic to publish to"
 )
 parser.add_argument(
@@ -41,7 +39,6 @@ parser.add_argument(
     "--debug", type=bool, default=False,
     help="Sets the logging level to DEBUG"
 )
-
 
 counter = 0
 last_count = 0
@@ -86,10 +83,10 @@ def show_status():
     time_since_last_status = (now - last_status) or 1
 
     print(
-        "%s events (%s/sec)" % (
-            count_since_last_status,
-            count_since_last_status / time_since_last_status
-        )
+            "%s events (%s/sec)" % (
+        count_since_last_status,
+        count_since_last_status / time_since_last_status
+    )
     )
 
     last_count = counter
